@@ -20,18 +20,6 @@ def get_comics():
     return response.json()['alt']
 
 
-def vk_groups(vk_token):
-    params = {
-        'access_token': vk_token,
-        'v': 5.124,
-        'count': 10,
-        'extended': 1
-    }
-    response = requests.get('https://api.vk.com/method/groups.get/', params=params)
-    response.raise_for_status()
-    return response.json()
-
-
 def get_wall_upload_url(vk_token):
     params = {
         'access_token': vk_token,
