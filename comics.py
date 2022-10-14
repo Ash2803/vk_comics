@@ -75,13 +75,35 @@ def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
 
 
 def main():
+    global save_image, image_upload
     load_dotenv()
     vk_token = os.environ['VK_TOKEN']
     group_id = '216491312'
     get_comics()
-    uploaded_photo = upload_comics(get_wall_upload_url(vk_token, group_id))
-    saved_photo = save_wall_photo(vk_token, group_id, uploaded_photo)
-    publish_wall_photo(vk_token, group_id, saved_photo['owner_id'], saved_photo['id'], get_comics())
+    try:
+        image_upload = upload_comics(get_wall_upload_url(vk_token, group_id))
+    except KeyError:
+        print("KeyError, please check request parameters")
+        os.remove("comic.png")
+    except ConnectionError:
+        print('Connection error')
+        os.remove("comic.png")
+    try:
+        save_image = save_wall_photo(vk_token, group_id, image_upload)
+    except KeyError:
+        print("KeyError, please check request parameters")
+        os.remove("comic.png")
+    except ConnectionError:
+        print('Connection error')
+        os.remove("comic.png")
+    try:
+        publish_wall_photo(vk_token, group_id, save_image['owner_id'], save_image['id'], get_comics())
+    except KeyError:
+        print("KeyError, please check request parameters")
+        os.remove("comic.png")
+    except ConnectionError:
+        print('Connection error')
+        os.remove("comic.png")
     os.remove("comic.png")
 
 
