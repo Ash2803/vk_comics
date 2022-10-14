@@ -20,10 +20,10 @@ def get_comics():
     return response.json()['alt']
 
 
-def get_wall_upload_url(vk_token):
+def get_wall_upload_url(vk_token, group_id):
     params = {
         'access_token': vk_token,
-        'group_id': '216491312',
+        'group_id': group_id,
         'v': 5.131
     }
     response = requests.get('https://api.vk.com/method/photos.getWallUploadServer', params=params)
@@ -42,13 +42,13 @@ def upload_comics(upload_url):
         return response.json()
 
 
-def save_wall_photo(vk_token, image):
+def save_wall_photo(vk_token, group_id, image):
     params = {
         'access_token': vk_token,
         'server': image['server'],
         'photo': image['photo'],
         'hash': image['hash'],
-        'group_id': '216491312',
+        'group_id': group_id,
         'v': 5.131
     }
     response = requests.post('https://api.vk.com/method/photos.saveWallPhoto', params=params)
@@ -79,9 +79,10 @@ def main():
     vk_token = os.environ['VK_TOKEN']
     group_id = '216491312'
     get_comics()
-    uploaded_photo = upload_comics(get_wall_upload_url(vk_token))
-    saved_photo = save_wall_photo(vk_token, uploaded_photo)
+    uploaded_photo = upload_comics(get_wall_upload_url(vk_token, group_id))
+    saved_photo = save_wall_photo(vk_token, group_id, uploaded_photo)
     publish_wall_photo(vk_token, group_id, saved_photo['owner_id'], saved_photo['id'], get_comics())
+    os.remove("comic.png")
 
 
 if __name__ == '__main__':
