@@ -93,7 +93,7 @@ def main():
     get_comics()
     uploaded_photo = upload_comics(get_wall_upload_url(vk_token))
     saved_photo = save_wall_photo(vk_token, uploaded_photo)
-    print(publish_wall_photo(vk_token, group_id, saved_photo['owner_id'], saved_photo['id'], get_comics()))
+    publish_wall_photo(vk_token, group_id, saved_photo['owner_id'], saved_photo['id'], get_comics())
 
 
 if __name__ == '__main__':
