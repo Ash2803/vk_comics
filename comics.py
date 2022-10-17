@@ -38,8 +38,8 @@ def upload_comic(upload_url):
         files = {
             'photo': file,
         }
-    response = requests.post(url, files=files)
-    response.raise_for_status()
+        response = requests.post(url, files=files)
+        response.raise_for_status()
     return response.json()
 
 
