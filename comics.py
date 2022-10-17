@@ -88,7 +88,7 @@ def main():
         print('Connection error')
         os.remove("comic.png")
     try:
-        save_image = save_wall_photo(vk_token, group_id, uploaded_image)
+        saved_image = save_wall_photo(vk_token, group_id, uploaded_image)
     except KeyError:
         print("KeyError, please check request parameters")
         os.remove("comic.png")
