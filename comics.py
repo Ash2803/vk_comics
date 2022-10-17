@@ -75,7 +75,6 @@ def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
 
 
 def main():
-    global save_image, image_upload
     load_dotenv()
     vk_token = os.environ['VK_TOKEN']
     group_id = '216491312'
