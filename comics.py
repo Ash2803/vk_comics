@@ -53,11 +53,11 @@ def save_wall_photo(vk_token, group_id, image):
     }
     response = requests.post('https://api.vk.com/method/photos.saveWallPhoto', params=params)
     response.raise_for_status()
-    image_info = {
+    image_content = {
         'id': response.json()['response'][0]['id'],
         'owner_id': response.json()['response'][0]['owner_id'],
     }
-    return image_info
+    return image_content
 
 
 def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
@@ -80,7 +80,7 @@ def main():
     group_id = '216491312'
     get_comics()
     try:
-        image_upload = upload_comics(get_wall_upload_url(vk_token, group_id))
+        uploaded_image = upload_comics(get_wall_upload_url(vk_token, group_id))
     except KeyError:
         print("KeyError, please check request parameters")
         os.remove("comic.png")
@@ -88,7 +88,7 @@ def main():
         print('Connection error')
         os.remove("comic.png")
     try:
-        save_image = save_wall_photo(vk_token, group_id, image_upload)
+        save_image = save_wall_photo(vk_token, group_id, uploaded_image)
     except KeyError:
         print("KeyError, please check request parameters")
         os.remove("comic.png")
