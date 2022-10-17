@@ -91,8 +91,6 @@ def main():
             uploaded_image['hash']
         )
         publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], comic)
-    except KeyError:
-        print(traceback.format_exc())
     finally:
         os.remove("comic.png")
 
