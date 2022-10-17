@@ -96,7 +96,7 @@ def main():
         print('Connection error')
         os.remove("comic.png")
     try:
-        publish_wall_photo(vk_token, group_id, save_image['owner_id'], save_image['id'], get_comics())
+        publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], get_comics())
     except KeyError:
         print("KeyError, please check request parameters")
         os.remove("comic.png")
