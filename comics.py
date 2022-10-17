@@ -43,12 +43,12 @@ def upload_comic(upload_url):
     return response.json()
 
 
-def save_wall_photo(vk_token, group_id, image):
+def save_wall_photo(vk_token, group_id, server, photo, photo_hash):
     params = {
         'access_token': vk_token,
-        'server': image['server'],
-        'photo': image['photo'],
-        'hash': image['hash'],
+        'server': server,
+        'photo': photo,
+        'hash': photo_hash,
         'group_id': group_id,
         'v': 5.131
     }
@@ -83,7 +83,12 @@ def main():
     try:
         get_comic()
         uploaded_image = upload_comic(get_wall_upload_url(vk_token, group_id))
-        saved_image = save_wall_photo(vk_token, group_id, uploaded_image)
+        saved_image = save_wall_photo(vk_token,
+                                      group_id,
+                                      uploaded_image['server'],
+                                      uploaded_image['photo'],
+                                      uploaded_image['hash']
+                                      )
         publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], get_comic())
     except KeyError:
         print(traceback.format_exc())
