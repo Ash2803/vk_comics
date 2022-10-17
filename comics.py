@@ -1,5 +1,6 @@
 import os
 import random
+import traceback
 
 import requests
 from dotenv import load_dotenv
@@ -85,9 +86,8 @@ def main():
         saved_image = save_wall_photo(vk_token, group_id, uploaded_image)
         publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], get_comic())
     except KeyError:
-        print("KeyError, please check request parameters")
-    except ConnectionError:
-        print('Connection error, check your internet connection')
+        # print("KeyError, please check request parameters")
+        print(traceback.format_exc())
     finally:
         os.remove("comic.png")
 
