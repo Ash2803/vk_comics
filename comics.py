@@ -6,6 +6,10 @@ import requests
 from dotenv import load_dotenv
 
 
+class VKError(Exception):
+    pass
+
+
 def get_comic():
     current_comic = requests.get('https://xkcd.com/info.0.json')
     current_comic.raise_for_status()
@@ -76,6 +80,15 @@ def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
     return response.json()
 
 
+def vk_exception_handling(upload, save, publish):
+    if 'error' in upload:
+        raise VKError(upload['error'])
+    elif 'error' in save:
+        raise VKError(save['error'])
+    elif 'error' in publish:
+        raise VKError(publish['error'])
+
+
 def main():
     load_dotenv()
     vk_token = os.environ['VK_TOKEN']
@@ -90,7 +103,10 @@ def main():
             uploaded_image['photo'],
             uploaded_image['hash']
         )
-        publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], comic)
+        published_photo = publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], comic)
+        vk_exception_handling(uploaded_image, saved_image, published_photo)
+    except requests.exceptions.HTTPError:
+        print(traceback.format_exc())
     finally:
         os.remove("comic.png")
 
