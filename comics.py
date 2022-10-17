@@ -86,7 +86,6 @@ def main():
         saved_image = save_wall_photo(vk_token, group_id, uploaded_image)
         publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], get_comic())
     except KeyError:
-        # print("KeyError, please check request parameters")
         print(traceback.format_exc())
     finally:
         os.remove("comic.png")
