@@ -79,7 +79,7 @@ def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
 def main():
     load_dotenv()
     vk_token = os.environ['VK_TOKEN']
-    group_id = '216491312'
+    group_id = os.environ['VK_GROUP_ID']
     try:
         get_comic()
         uploaded_image = upload_comic(get_wall_upload_url(vk_token, group_id))
