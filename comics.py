@@ -36,8 +36,7 @@ def get_wall_upload_url(vk_token, group_id):
     url = response.json()
     if 'error' in url:
         raise VKError(url['error'])
-    else:
-        return response.json()['response']['upload_url']
+    return response.json()['response']['upload_url']
 
 
 def upload_comic(upload_url):
@@ -51,8 +50,7 @@ def upload_comic(upload_url):
     uploaded_comic = response.json()
     if 'error' in uploaded_comic:
         raise VKError(uploaded_comic['error'])
-    else:
-        return response.json()
+    return response.json()
 
 
 def save_wall_photo(vk_token, group_id, server, photo, photo_hash):
@@ -73,8 +71,7 @@ def save_wall_photo(vk_token, group_id, server, photo, photo_hash):
     }
     if 'error' in saved_photo:
         raise VKError(saved_photo['error'])
-    else:
-        return image_content
+    return image_content
 
 
 def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
@@ -91,8 +88,7 @@ def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
     published_photo = response.json()
     if 'error' in published_photo:
         raise VKError(published_photo['error'])
-    else:
-        return response.json()
+    return response.json()
 
 
 def main():
