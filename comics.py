@@ -80,7 +80,7 @@ def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
         'from_group': 1,
         'v': 5.131,
         'attachments': f'photo{owner_id}_{media_id}',
-        'owner_id': f'-{owner_id}',
+        'owner_id': f'-{group_id}',
         'message': text
     }
     response = requests.post('https://api.vk.com/method/wall.post', params=params)
