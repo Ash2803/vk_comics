@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 
 
-def get_comics():
+def get_comic():
     current_comic = requests.get('https://xkcd.com/info.0.json')
     current_comic.raise_for_status()
     last_comic = current_comic.json()['num']
@@ -31,7 +31,7 @@ def get_wall_upload_url(vk_token, group_id):
     return response.json()['response']['upload_url']
 
 
-def upload_comics(upload_url):
+def upload_comic(upload_url):
     with open('comic.png', 'rb') as file:
         url = upload_url
         files = {
@@ -80,10 +80,10 @@ def main():
     vk_token = os.environ['VK_TOKEN']
     group_id = '216491312'
     try:
-        get_comics()
-        uploaded_image = upload_comics(get_wall_upload_url(vk_token, group_id))
+        get_comic()
+        uploaded_image = upload_comic(get_wall_upload_url(vk_token, group_id))
         saved_image = save_wall_photo(vk_token, group_id, uploaded_image)
-        publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], get_comics())
+        publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], get_comic())
     except KeyError:
         print("KeyError, please check request parameters")
     except ConnectionError:
