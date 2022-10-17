@@ -37,9 +37,9 @@ def upload_comics(upload_url):
         files = {
             'photo': file,
         }
-        response = requests.post(url, files=files)
-        response.raise_for_status()
-        return response.json()
+    response = requests.post(url, files=files)
+    response.raise_for_status()
+    return response.json()
 
 
 def save_wall_photo(vk_token, group_id, image):
