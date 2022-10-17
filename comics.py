@@ -78,32 +78,19 @@ def main():
     load_dotenv()
     vk_token = os.environ['VK_TOKEN']
     group_id = '216491312'
-    get_comics()
     try:
+        get_comics()
         uploaded_image = upload_comics(get_wall_upload_url(vk_token, group_id))
-    except KeyError:
-        print("KeyError, please check request parameters")
-        os.remove("comic.png")
-    except ConnectionError:
-        print('Connection error')
-        os.remove("comic.png")
-    try:
         saved_image = save_wall_photo(vk_token, group_id, uploaded_image)
-    except KeyError:
-        print("KeyError, please check request parameters")
-        os.remove("comic.png")
-    except ConnectionError:
-        print('Connection error')
-        os.remove("comic.png")
-    try:
         publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], get_comics())
     except KeyError:
         print("KeyError, please check request parameters")
-        os.remove("comic.png")
     except ConnectionError:
         print('Connection error')
+    except ValueError:
+        print("ValueError")
+    finally:
         os.remove("comic.png")
-    os.remove("comic.png")
 
 
 if __name__ == '__main__':
