@@ -33,7 +33,11 @@ def get_wall_upload_url(vk_token, group_id):
     }
     response = requests.get('https://api.vk.com/method/photos.getWallUploadServer', params=params)
     response.raise_for_status()
-    return response.json()['response']['upload_url']
+    url = response.json()
+    if 'error' in url:
+        raise VKError(url['error'])
+    else:
+        return response.json()['response']['upload_url']
 
 
 def upload_comic(upload_url):
@@ -44,7 +48,11 @@ def upload_comic(upload_url):
         }
         response = requests.post(url, files=files)
         response.raise_for_status()
-    return response.json()
+    uploaded_comic = response.json()
+    if 'error' in uploaded_comic:
+        raise VKError(uploaded_comic['error'])
+    else:
+        return response.json()
 
 
 def save_wall_photo(vk_token, group_id, server, photo, photo_hash):
@@ -63,7 +71,10 @@ def save_wall_photo(vk_token, group_id, server, photo, photo_hash):
         'id': saved_photo['response'][0]['id'],
         'owner_id': saved_photo['response'][0]['owner_id'],
     }
-    return image_content
+    if 'error' in saved_photo:
+        raise VKError(saved_photo['error'])
+    else:
+        return image_content
 
 
 def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
@@ -72,21 +83,16 @@ def publish_wall_photo(vk_token, group_id, owner_id, media_id, text):
         'from_group': 1,
         'v': 5.131,
         'attachments': f'photo{owner_id}_{media_id}',
-        'owner_id': f'-{group_id}',
+        'owner_id': f'-{owner_id}',
         'message': text
     }
     response = requests.post('https://api.vk.com/method/wall.post', params=params)
     response.raise_for_status()
-    return response.json()
-
-
-def vk_exception_handling(upload, save, publish):
-    if 'error' in upload:
-        raise VKError(upload['error'])
-    elif 'error' in save:
-        raise VKError(save['error'])
-    elif 'error' in publish:
-        raise VKError(publish['error'])
+    published_photo = response.json()
+    if 'error' in published_photo:
+        raise VKError(published_photo['error'])
+    else:
+        return response.json()
 
 
 def main():
@@ -103,8 +109,7 @@ def main():
             uploaded_image['photo'],
             uploaded_image['hash']
         )
-        published_photo = publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], comic)
-        vk_exception_handling(uploaded_image, saved_image, published_photo)
+        publish_wall_photo(vk_token, group_id, saved_image['owner_id'], saved_image['id'], comic)
     except requests.exceptions.HTTPError:
         print(traceback.format_exc())
     finally:
