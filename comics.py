@@ -86,9 +86,7 @@ def main():
     except KeyError:
         print("KeyError, please check request parameters")
     except ConnectionError:
-        print('Connection error')
-    except ValueError:
-        print("ValueError")
+        print('Connection error, check your internet connection')
     finally:
         os.remove("comic.png")
 
